@@ -1,0 +1,160 @@
+1- Create database
+mysql> CREATE DATABASE dbms_Lab1;
+
+2.show databases
+mysql> SHOW DATABASES;
+
+3. Change to dbms_Lab1
+mysql> USE dbms_Lab1;
+
+4. return the name of current database
+mysql> SELECT DATABASE() FROM DUAL;
+
+5. Delete databse
+mysql> DROP DATABASE dbms_lab1;
+mysql> SHOW DATABASES;
+
+6. Create a new one
+mysql> CREATE DATABASE dbms_lab1;
+mysql> SHOW DATABASES;
+mysql> USE dbms_Lab1;
+
+7. View the current database
+mysql> SELECT DATABASE() FROM DUAL;
+
+8. Create a table - EMPLOYEE Table (attributes should be the same as defined in reference text book) 
+mysql> CREATE TABLE EMPLOYEE (  Fname VARCHAR(15) NOT NULL, Minit CHAR, Lname VARCHAR(15) NOT NULL, Ssn CHAR(9) NOT NULL, Bdate DATE, Address VARCHAR(30), Sex CHAR, Salary DECIMAL(10,2), Super_ssn CHAR(9), Dno  INT NOT NULL, PRIMARY KEY (Ssn), FOREIGN KEY (Super_ssn) REFERENCES EMPLOYEE(Ssn) );
+
+9. view created tables in databse dbms_lab1
+mysql> SHOW TABLES;
+
+10. View attributes of employee table
+mysql> SHOW COLUMNS FROM EMPLOYEE;
+
+11. Delete table
+mysql> DROP TABLE EMPLOYEE;
+
+12. Show table, ensure its got deleted.
+mysql> SHOW TABLES;
+
+13. Create EMPLOYEE table once again. 
+mysql> CREATE TABLE EMPLOYEE (
+				    Fname VARCHAR(15) NOT NULL,
+				    Minit CHAR,
+				    Lname VARCHAR(15) NOT NULL,
+				    Ssn CHAR(9) NOT NULL,
+				    Bdate DATE,
+				    Address VARCHAR(30),
+				    Sex CHAR,
+				    Salary DECIMAL(10,2),
+				    Super_ssn CHAR(9),
+				    Dno  INT NOT NULL,
+				    PRIMARY KEY (Ssn),
+				    FOREIGN KEY (Super_ssn) REFERENCES EMPLOYEE(Ssn)
+				    );
+14. Create DEPARTMENT Table (attributes should be the same as defined in reference text book) 
+mysql> CREATE TABLE DEPARTMENT ( 
+				Dname VARCHAR(15) NOT NULL,
+				Dnumber INT NOT NULL,
+				Mgr_ssn CHAR(9) NOT NULL,
+				Mgr_start_date DATE,
+				PRIMARY KEY (Dnumber),
+				UNIQUE (Dname),
+				FOREIGN KEY (Mgr_ssn) REFERENCES EMPLOYEE(Ssn) );
+
+15. View all tables in database
+mysql> SHOW TABLES FROM dbms_lab1;
+
+16. add/alter - Add Email to EMployee table
+mysql> ALTER TABLE EMPLOYEE ADD Email VARCHAR(20);
+
+17. View columns to verify new attribute added.
+mysql> SHOW COLUMNS FROM EMPLOYEE;
+
+18. Modify/Alter - Modify Email to varchar(10) and add NOT NULL.
+mysql> ALTER TABLE EMPLOYEE MODIFY Email VARCHAR(10) NOT NULL;
+
+19. View columns to verify new attribute modified.
+mysql> SHOW COLUMNS FROM EMPLOYEE;
+
+20. remove/alter - delete email field from Employee
+mysql> ALTER TABLE EMPLOYEE DROP COLUMN Email;
+
+21. View columns to verify new attribute DELETED.
+mysql> SHOW COLUMNS FROM EMPLOYEE;
+
+22. Add Attribute Location to DEPARTMEN table
+mysql> ALTER TABLE DEPARTMENT ADD DeptLocation VARCHAR(20);
+
+23. View columns to verify new attribute modified.
+mysql> SHOW COLUMNS FROM DEPARTMENT;
+
+24. Modify column name in department
+mysql> ALTER TABLE DEPARTMENT RENAME COLUMN DeptLocation TO Location;
+
+25. View columns to verify new attribute modified.
+mysql> SHOW COLUMNS FROM DEPARTMENT;
+
+26. Drop column for table;
+mysql> alter table DEPARTMENT drop column Location;
+ 
+26. Rename table DEPARTMENT to DEPARTMENT_TABLE
+mysql> RENAME TABLE DEPARTMENT TO DEPARTMENT_TABLE;
+
+27. View all tables in database
+mysql> SHOW TABLES FROM dbms_lab1;
+
+28. Add constriants (foreign key) to Employee on Dnumber.
+mysql> ALTER TABLE EMPLOYEE ADD FOREIGN KEY(Dno) REFERENCES DEPARTMENT_TABLE(Dnumber);
+
+29. View foreign key
+mysql> SHOW CREATE TABLE  EMPLOYEE;
+
+30. Create PROJECT Table with  [AUTO_INCREMENT] on primary key
+mysql> CREATE TABLE PROJECT ( Pname VARCHAR(15) NOT NULL, Pnumber INT NOT NULL AUTO_INCREMENT, Plocation VARCHAR(15), Dnum INT NOT NULL, PRIMARY KEY (Pnumber) , UNIQUE (Pname), FOREIGN KEY (Dnum) REFERENCES DEPARTMENT_TABLE(Dnumber) );
+
+31. Insert table DEPARTMENT_TABLE ( add 3 department with 3 mgr ssid)
+mysql> INSERT INTO DEPARTMENT_TABLE  (Dname, Dnumber, Mgr_ssn, Mgr_start_date) VALUES ('Research', '1', 'ssn2001', '2021-5-30');
+     --> Insert ('Admin', '2', 'ssn3001', '2021-6-30');
+     --> Insert ('Headquarters', '3', 'ssn4001', '2021-7-30');
+
+SET FOREIGN_KEY_CHECKS=0;
+
+31. Display Table
+mysql> SELECT * FROM DEPARTMENT_TABLE;
+
+32. Populate Employee Table (insert 3 employees, corresponsing to 3 departments)
+mysql> INSERT INTO EMPLOYEE (Fname, Minit, Lname, Ssn, Bdate, Address, Sex, Salary, Super_ssn, Dno) VALUES ('John', 'B', 'Smith',  'ssn2001', '1970-05-30', 'New York', 'M', '100000', 'ssn1001', 1);
+  --> insert  ('Ramesh', 'A', 'Narayan',  'ssn3001', '1971-05-30', 'New Delhi', 'M', '100000', 'ssn3001', 2);
+  --> insert  ('Sam', 'C', 'Eric',  'ssn4001', '1972-05-30', 'Paris', 'M', '100000', 'ssn4001', 3);
+  --> insert  ('James', 'D', 'Joe',  'ssn2002', '1970-05-30', 'New York', 'M', '50000', 'ssn2001', 1);
+  --> insert  ('Alice', 'E', 'Alice',  'ssn2003', '1970-05-30', 'New York', 'M', '100000', 'ssn1001', 1);
+  --> insert  ('Bob', 'F', 'Bob',  'ssn2004', '1970-05-30', 'New York', 'M', '100000', 'ssn1001', 1);
+  --> insert  ('Ram', 'M', 'Ram',  'ssn2005', '1970-05-30', 'New York', 'M', '100000', 'ssn1001', 1);
+  
+  One project should contain 5 employees..!
+  
+33. Display Table
+mysql> SELECT * FROM EMPLOYEE;
+
+34. Populate Project databse
+mysql> INSERT INTO PROJECT ( Pname, Pnumber, Plocation, Dnum) VALUES ('ProductX', '1001', 'Cochin', '1');
+mysql> INSERT INTO PROJECT ( Pname, Plocation, Dnum) VALUES ('Computerization',  'Cochin', '1');
+mysql> INSERT INTO PROJECT ( Pname, Plocation, Dnum) VALUES ('Jobfest',  'Cochin', '3');
+
+35. Query 1 -The SELECT-FROM-WHERE Structure of Basic SQL Queries
+Retrieve the name and address of all employees who work for the ‘Research’ department.
+mysql> select Fname, Lname from EMPLOYEE, DEPARTMENT_TABLE where DEPARTMENT_TABLE.Dname='Research' and DEPARTMENT_TABLE.Dnumber = EMPLOYEE.Dno;
+
+
+36. Query 2 -For each department, retrieve the department number, the number of employees in the department, and their average salary.
+mysql> select Dno, count(*), avg(Salary)  from EMPLOYEE group by Dno;
+ 
+37. Query 3
+For each department that has more than five employees, retrieve the department number and the number of its employees who are making
+more than $40,000.
+
+SELECT Dnumber, COUNT (*) FROM DEPARTMENT_TABLE, EMPLOYEE WHERE Dnumber=Dno AND Salary>40000 AND (SELECT EMPLOYEE.Dno FROM EMPLOYEE GROUP BY Dno HAVING COUNT(*)> 4);
+
+
+
